@@ -12,10 +12,8 @@ class DockingStation
   def release_bike
     if @bikes.empty?
       fail 'No bikes available'
-    elsif (@bikes.last).broken?
-      fail 'Bike is broken'
     else
-      @bikes.pop
+      return_bike
     end
   end
 
@@ -26,10 +24,12 @@ class DockingStation
 
   private
 
-  #  def broken?
-  #    bike = Bike.new
-  #    true if bike.report_broken
-  #  end
+    def return_bike
+      @bikes.each do |bike|
+        return bike unless bike.broken?
+      end
+      fail 'Bike is broken'
+    end
 
     def full?
       true if @bikes.count >= @capacity
