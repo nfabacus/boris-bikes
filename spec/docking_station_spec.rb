@@ -22,7 +22,8 @@ describe DockingStation do
     it 'releases working bikes' do
       bike = double(:bike, broken?: false)
       subject.dock(bike)
-      expect(subject.release_bike).to be bike
+      released_bike = subject.release_bike
+      expect(released_bike).to be bike
     end
 
     it 'raises an error' do
@@ -33,7 +34,7 @@ describe DockingStation do
       bike = double(:bike, broken?: true)
       #allow(bike).to receive(:broken?).and_return(true)
       subject.dock(bike)
-      expect{ subject.release_bike}.to raise_error('Bike is broken')
+      expect{ subject.release_bike}.to raise_error('No bikes available')
     end
   end
 

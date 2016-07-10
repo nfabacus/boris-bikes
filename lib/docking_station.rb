@@ -9,27 +9,25 @@ class DockingStation
     @capacity = capacity
   end
 
-  def release_bike
-    if @bikes.empty?
-      fail 'No bikes available'
-    else
-      return_bike
-    end
-  end
-
   def dock(bike)
     fail 'Docking station full' if full?
     @bikes << bike
   end
 
+  def release_bike
+    for i in 0..@bikes.count-1
+      if !@bikes[i].broken?
+        released_bike = @bikes[i]
+        @bikes.delete_at(i)
+        return released_bike
+      end
+    end
+    fail 'No bikes available'
+  end
+
   private
 
-    def return_bike
-      @bikes.each do |bike|
-        return bike unless bike.broken?
-      end
-      fail 'Bike is broken'
-    end
+
 
     def full?
       true if @bikes.count >= @capacity
