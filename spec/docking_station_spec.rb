@@ -16,26 +16,22 @@ describe DockingStation do
   end
 
   describe '#release_bike' do
-    it 'releases a bike' do
-      bike = double(:bike)
-      subject.dock(bike)
-      expect(subject.release_bike).to eq bike
-    end
-
+    # let's extract the double to a let
+    # statement so we can use it repeatedly
+    let(:bike) { double :bike }
     it 'releases working bikes' do
-
-      subject.dock double(:bike)
-      bike = subject.release_bike
-      expect(bike).to be_working
+      bike = double(:bike, broken?: false)
+      subject.dock(bike)
+      expect(subject.release_bike).to be bike
     end
 
     it 'raises an error' do
       expect { subject.release_bike }.to raise_error('No bikes available')
     end
 
-    it 'should not release broken bike' do
-      bike = double(:bike)
-      bike.report_broken
+    it 'does not release broken bike' do
+      bike = double(:bike, broken?: true)
+      #allow(bike).to receive(:broken?).and_return(true)
       subject.dock(bike)
       expect{ subject.release_bike}.to raise_error('Bike is broken')
     end
@@ -47,7 +43,7 @@ describe DockingStation do
       subject.dock(bike)
       expect(subject.bikes).to eq [bike]
     end
-    
+
     it 'raises an error when full' do
       DockingStation::DEFAULT_CAPACITY.times { subject.dock double(:bike) }
       expect { subject.dock double(:bike) }.to raise_error ('Docking station full')
