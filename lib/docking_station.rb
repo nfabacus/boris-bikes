@@ -19,6 +19,7 @@ class DockingStation
       if !@bikes[i].broken?
         released_bike = @bikes[i]
         @bikes.delete_at(i)
+        puts "released bike: #{released_bike}"
         return released_bike
       end
     end

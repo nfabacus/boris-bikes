@@ -11,30 +11,24 @@ class Garage
 
   def take_bike(bike)
     fail 'Garage full' if full?
-    if bike.broken?
-      puts "Broken bike accepted."
-      bike.report_fixed
-      puts "Bike is fixed and being stored in the garage."
-      @bikes << bike
-    else
-      fail 'Grange can only accept broken bikes.'
-    end
+    fail 'Garage can only accept broken bikes.' if !bike.broken?
+    puts "Broken bike accepted."
+    @bikes << bike
   end
 
   def release_bike
-    for i in 0..@bikes.count-1
-      if !@bikes[i].broken?
-        released_bike = @bikes[i]
-        @bikes.delete_at(i)
-        return released_bike
-      end
-    end
-    fail 'No bikes available'
+    fail 'No bikes available' if @bikes.empty?
+    bike = @bikes.pop
+    bike.report_fixed
+    bike
+  end
+
+  def fix_bike(bike)
+    bike.broken = false
+    bike
   end
 
   private
-
-
 
     def full?
       true if @bikes.count >= @capacity

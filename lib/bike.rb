@@ -1,16 +1,12 @@
 class Bike
-  def initialize
-    @broken = false
+  attr_accessor :broken, :report_broken, :report_fixed
+
+  def initialize(broken = false)
+    @broken = broken
   end
 
-  def working?
-    if @broken == false
-      true
-    elsif @broken == true
-      false
-    else
-      puts "unknown"
-    end
+  def broken?
+    @broken
   end
 
   def report_broken
@@ -19,10 +15,6 @@ class Bike
 
   def report_fixed
     @broken = false
-  end
-
-  def broken?
-    @broken
   end
 
 end

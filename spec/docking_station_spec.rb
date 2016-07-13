@@ -22,6 +22,7 @@ describe DockingStation do
     it 'releases working bikes' do
       bike = double(:bike, broken?: false)
       subject.dock(bike)
+      allow(bike).to receive(:report_fixed)
       released_bike = subject.release_bike
       expect(released_bike).to be bike
     end
